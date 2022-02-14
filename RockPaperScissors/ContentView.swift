@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var possibleMoves = ["🪨", "📜", "✂️"]
-    @State private var winningMoves = ["📜", "✂️", "🪨"]
+    
     @State private var appChoice = Int.random(in: 0...2)
     @State private var shouldWin = Bool.random()
     @State private var playerScore = 0
