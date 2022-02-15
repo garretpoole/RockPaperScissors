@@ -25,10 +25,11 @@ struct ContentView: View {
     @State private var possibleMoves = ["🪨", "📜", "✂️"]
     
     @State private var appChoice = Int.random(in: 0...2)
-    @State private var shouldWin = Bool.random()
     @State private var playerScore = 0
     @State private var totalTurns = 0
+    @State private var resultTitle = ""
     @State private var showingFinalScore = false
+    @State private var showingResult = false
     
     var body: some View {
         ZStack{
@@ -41,16 +42,7 @@ struct ContentView: View {
                     .foregroundColor(.white)
                 Spacer()
                 VStack(spacing: 15){
-                    if shouldWin{
-                        Text("WIN: \(possibleMoves[appChoice])")
-                            .font(.largeTitle)
-                            .foregroundStyle(.secondary)
-                    }
-                    else{
-                        Text("LOSE: \(possibleMoves[appChoice])")
-                            .font(.largeTitle)
-                            .foregroundStyle(.secondary)
-                    }
+                    
                     ForEach(0..<3) { number in
                         Button {
                             choiceTapped(number)
@@ -76,45 +68,68 @@ struct ContentView: View {
             }
             .padding()
         }
+        .alert(resultTitle, isPresented: $showingResult){
+            Button("Continue"){
+                nextTurn()
+            }
+        } message: {
+            Text("Computer chose \(possibleMoves[appChoice])")
+        }
+
+        
         .alert("Congratulations!", isPresented: $showingFinalScore){
             Button("Continue"){
                 resetGame()
             }
         } message: {
-            Text("You won 10/\(totalTurns) games")
+            Text("You won \(playerScore)/\(totalTurns) games")
         }
     }
     
     func choiceTapped(_ number: Int){
         switch possibleMoves[number]{
         case "🪨":
-            if appChoice == 2 && shouldWin || appChoice == 1 && !shouldWin{
+            if appChoice == 2 {
                 playerScore += 1
+                resultTitle = "YOU WON"
+            }
+            else{
+                resultTitle = "YOU LOST"
             }
         case "📜":
-            if appChoice == 0 && shouldWin || appChoice == 2 && !shouldWin{
+            if appChoice == 0 {
                 playerScore += 1
+                resultTitle = "YOU WON"
+            }
+            else{
+                resultTitle = "YOU LOST"
             }
         case "✂️":
-            if appChoice == 1 && shouldWin || appChoice == 0 && !shouldWin{
+            if appChoice == 1 {
                 playerScore += 1
+                resultTitle = "YOU WON"
+            }
+            else{
+                resultTitle = "YOU LOST"
             }
         default:
             return
         }
+        showingResult = true
         totalTurns += 1
-        appChoice = Int.random(in: 0...2)
-        shouldWin.toggle()
         if playerScore == 10{
             showingFinalScore = true
         }
+    }
+    
+    func nextTurn(){
+        appChoice = Int.random(in: 0...2)
     }
     
     func resetGame(){
         playerScore = 0
         totalTurns = 0
         appChoice = Int.random(in: 0...2)
-        shouldWin.toggle()
     }
 }
 
