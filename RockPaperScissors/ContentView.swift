@@ -37,7 +37,7 @@ struct ContentView: View {
                 .ignoresSafeArea()
             VStack{
                 Spacer()
-                Text("R🪨P📜S✂️")
+                Text("R🪨   P📜   S✂️")
                     .font(.largeTitle.bold())
                     .foregroundColor(.white)
                 Spacer()
