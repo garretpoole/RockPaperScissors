@@ -6,7 +6,20 @@
 //
 
 import SwiftUI
-
+struct ChoiceImage: View{
+    var choice: String
+    
+    var body: some View{
+        Text(choice)
+            .frame(maxWidth: .infinity)
+            .font(.system(size: 70))
+            .padding(.vertical, 10)
+            .overlay(RoundedRectangle(cornerRadius: 90)
+                        .stroke(Color.brown))
+            .background(.thinMaterial)
+            .cornerRadius(90)
+    }
+}
 
 struct ContentView: View {
     @State private var possibleMoves = ["🪨", "📜", "✂️"]
@@ -14,6 +27,8 @@ struct ContentView: View {
     @State private var appChoice = Int.random(in: 0...2)
     @State private var shouldWin = Bool.random()
     @State private var playerScore = 0
+    @State private var totalTurns = 0
+    @State private var showingFinalScore = false
     
     var body: some View {
         ZStack{
@@ -40,19 +55,13 @@ struct ContentView: View {
                         Button {
                             choiceTapped(number)
                         } label: {
-                            Text(possibleMoves[number])
+                            ChoiceImage(choice: possibleMoves[number])
                         }
                     }
-                    .frame(maxWidth: .infinity)
-                    .font(.system(size: 70))
-                    .padding(.vertical, 20)
-                    .overlay(RoundedRectangle(cornerRadius: 90)
-                                .stroke(Color.brown))
-                    .background(.thinMaterial)
-                    .cornerRadius(90)
+                    
                 }
                 .frame(maxWidth: .infinity)
-                .padding(.vertical, 20)
+                .padding()
                 .background(.thinMaterial)
                 .clipShape(RoundedRectangle(cornerRadius: 20))
                 
@@ -66,6 +75,13 @@ struct ContentView: View {
                 Spacer()
             }
             .padding()
+        }
+        .alert("Congratulations!", isPresented: $showingFinalScore){
+            Button("Continue"){
+                resetGame()
+            }
+        } message: {
+            Text("You won 10/\(totalTurns) games")
         }
     }
     
@@ -86,6 +102,17 @@ struct ContentView: View {
         default:
             return
         }
+        totalTurns += 1
+        appChoice = Int.random(in: 0...2)
+        shouldWin.toggle()
+        if playerScore == 10{
+            showingFinalScore = true
+        }
+    }
+    
+    func resetGame(){
+        playerScore = 0
+        totalTurns = 0
         appChoice = Int.random(in: 0...2)
         shouldWin.toggle()
     }
