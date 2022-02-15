@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+
 struct ContentView: View {
     @State private var possibleMoves = ["🪨", "📜", "✂️"]
     
@@ -20,50 +21,51 @@ struct ContentView: View {
                 .ignoresSafeArea()
             VStack{
                 Spacer()
-                VStack{
-                    HStack{
-                        Spacer()
-                        Text("🪨ROCK🪨")
+                Text("R🪨P📜S✂️")
+                    .font(.largeTitle.bold())
+                    .foregroundColor(.white)
+                Spacer()
+                VStack(spacing: 15){
+                    if shouldWin{
+                        Text("WIN: \(possibleMoves[appChoice])")
                             .font(.largeTitle)
-                        Spacer()
-                        Text("📜PAPER📜")
-                            .font(.largeTitle)
-                        Spacer()
+                            .foregroundStyle(.secondary)
                     }
-                    Text("✂️SCISSORS✂️")
-                        .font(.largeTitle)
-                }
-                Spacer()
-                Text("Opponent: \(possibleMoves[appChoice])")
-                    .font(.largeTitle)
-                if shouldWin{
-                    Text("WIN")
-                        .font(.largeTitle)
-                }
-                else{
-                    Text("LOSE")
-                        .font(.largeTitle)
-                }
-                Spacer()
-                HStack{
+                    else{
+                        Text("LOSE: \(possibleMoves[appChoice])")
+                            .font(.largeTitle)
+                            .foregroundStyle(.secondary)
+                    }
                     ForEach(0..<3) { number in
                         Button {
                             choiceTapped(number)
                         } label: {
                             Text(possibleMoves[number])
-                                .font(.system(size: 60))
                         }
-                        .clipShape(Capsule())
-                        .background(.thinMaterial)
-                        .padding()
                     }
-                    
+                    .frame(maxWidth: .infinity)
+                    .font(.system(size: 70))
+                    .padding(.vertical, 20)
+                    .overlay(RoundedRectangle(cornerRadius: 90)
+                                .stroke(Color.brown))
+                    .background(.thinMaterial)
+                    .cornerRadius(90)
                 }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 20)
+                .background(.thinMaterial)
+                .clipShape(RoundedRectangle(cornerRadius: 20))
+                
+                Spacer()
+                Spacer()
+                
                 Text("SCORE: \(playerScore)")
                     .font(.title.bold())
+                    .foregroundColor(.white)
                 Spacer()
                 Spacer()
             }
+            .padding()
         }
     }
     
