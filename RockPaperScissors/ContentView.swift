@@ -33,7 +33,7 @@ struct ContentView: View {
     
     var body: some View {
         ZStack{
-            RadialGradient(colors: [.green, .black], center: .center, startRadius: 50, endRadius: 500)
+            RadialGradient(colors: [Color.init(red: 0.7, green: 0.3, blue: 0.2), .black], center: .bottom, startRadius: 20, endRadius: 900)
                 .ignoresSafeArea()
             VStack{
                 Spacer()
@@ -63,6 +63,9 @@ struct ContentView: View {
                 Text("SCORE: \(playerScore)")
                     .font(.title.bold())
                     .foregroundColor(.white)
+                Text("Games Played: \(totalTurns)")
+                    .foregroundStyle(.secondary)
+                    .font(.subheadline.weight(.heavy))
                 Spacer()
                 Spacer()
             }
@@ -82,7 +85,9 @@ struct ContentView: View {
                 resetGame()
             }
         } message: {
-            Text("You won \(playerScore)/\(totalTurns) games")
+            if totalTurns > 0{
+                Text("You won \(100 * (playerScore / totalTurns))% of games")
+            }
         }
     }
     
@@ -93,6 +98,9 @@ struct ContentView: View {
                 playerScore += 1
                 resultTitle = "YOU WON"
             }
+            else if appChoice == 0 {
+                resultTitle = "YOU TIED"
+            }
             else{
                 resultTitle = "YOU LOST"
             }
@@ -101,6 +109,9 @@ struct ContentView: View {
                 playerScore += 1
                 resultTitle = "YOU WON"
             }
+            else if appChoice == 1 {
+                resultTitle = "YOU TIED"
+            }
             else{
                 resultTitle = "YOU LOST"
             }
@@ -108,6 +119,9 @@ struct ContentView: View {
             if appChoice == 1 {
                 playerScore += 1
                 resultTitle = "YOU WON"
+            }
+            else if appChoice == 2 {
+                resultTitle = "YOU TIED"
             }
             else{
                 resultTitle = "YOU LOST"
